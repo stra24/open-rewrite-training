@@ -19,6 +19,12 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
+    // 一時的に追加。JUnit4コンパイル用（移行後に削除する）
+    testImplementation 'junit:junit:4.13.2'
+
+    // 一時的に追加。JUnit4のテストをJupiter（JUnit5）環境で動かせるようにするための設定
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
     // BOM（Bill of Materials）を読み込み、OpenRewrite の各レシピ群のバージョンを揃える設定
     // これを入れると、後で追加するレシピアーティファクト同士の依存関係の整合性を取ってくれる（バージョン衝突を回避できる）
     rewrite(platform('org.openrewrite.recipe:rewrite-recipe-bom:latest.release'))
@@ -34,7 +40,6 @@ rewrite {
     // 自動整形
     activeRecipe('org.openrewrite.java.format.AutoFormat')
 
-    // 追加。
     // 未使用インポートの削除
     activeRecipe('org.openrewrite.java.RemoveUnusedImports')
 }
