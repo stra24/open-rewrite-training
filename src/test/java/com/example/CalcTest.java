@@ -1,7 +1,8 @@
 package com.example;
 
-import org.junit.Test;            // JUnit4
-import static org.junit.Assert.*; // JUnit4
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*; // JUnit4
 
 public class CalcTest {
 
