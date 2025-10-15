@@ -33,15 +33,21 @@ dependencies {
     // あくまでこのレシピを使えるようにしただけで、ここに指定したのがrewriteDryRunやrewriteRunで実行されるわけではない。
     // rewriteDryRunやrewriteRunで実行されるのは、activeRecipeで指定したもの。
     rewrite('org.openrewrite.recipe:rewrite-static-analysis')
+
+    // 追加。テスト系レシピ集（JUnit移行などが入っている）
+    rewrite('org.openrewrite.recipe:rewrite-testing-frameworks')
 }
 
 // rewriteDryRun（差分プレビュー）や rewriteRun（実際に書き換え）を走らせたとき、どのレシピを実行するかをここで指定する。
 rewrite {
     // 自動整形
-    activeRecipe('org.openrewrite.java.format.AutoFormat')
+    // activeRecipe('org.openrewrite.java.format.AutoFormat') // JUnit4to5Migration の効果を見るためコメントアウトしておく。
 
     // 未使用インポートの削除
-    activeRecipe('org.openrewrite.java.RemoveUnusedImports')
+    // activeRecipe('org.openrewrite.java.RemoveUnusedImports') // JUnit4to5Migration の効果を見るためコメントアウトしておく。
+
+    // 追加。JUnit4 → JUnit5 への自動移行
+    activeRecipe('org.openrewrite.java.testing.junit5.JUnit4to5Migration')
 }
 
 test {
