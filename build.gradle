@@ -1,7 +1,6 @@
 plugins {
     id 'java'
 
-    // 追加。
     // OpenRewrite の Gradleプラグインを有効化されるため、以下のGradleタスクを使えるようになる。
     // rewriteDiscover ・・・ 使えるレシピの一覧を調べる（変更はしない）
     // rewriteDryRun ・・・ 差分だけプレビュー（実ファイルは変えない）
@@ -20,23 +19,24 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    // 追加。
     // BOM（Bill of Materials）を読み込み、OpenRewrite の各レシピ群のバージョンを揃える設定
     // これを入れると、後で追加するレシピアーティファクト同士の依存関係の整合性を取ってくれる（バージョン衝突を回避できる）
     rewrite(platform('org.openrewrite.recipe:rewrite-recipe-bom:latest.release'))
 
-    // 追加。
     // 軽微なコード品質の指摘の自動修正／import最適化／try-with-resources化など、静的解析ベースの軽微な品質改善の「レシピ集」を追加。
     // あくまでこのレシピを使えるようにしただけで、ここに指定したのがrewriteDryRunやrewriteRunで実行されるわけではない。
     // rewriteDryRunやrewriteRunで実行されるのは、activeRecipeで指定したもの。
     rewrite('org.openrewrite.recipe:rewrite-static-analysis')
 }
 
-// 追加。
 // rewriteDryRun（差分プレビュー）や rewriteRun（実際に書き換え）を走らせたとき、どのレシピを実行するかをここで指定する。
 rewrite {
     // 自動整形
     activeRecipe('org.openrewrite.java.format.AutoFormat')
+
+    // 追加。
+    // 未使用インポートの削除
+    activeRecipe('org.openrewrite.java.RemoveUnusedImports')
 }
 
 test {
