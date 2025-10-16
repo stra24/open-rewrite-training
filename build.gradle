@@ -28,20 +28,53 @@ dependencies {
     // rewriteDryRunやrewriteRunで実行されるのは、activeRecipeで指定したもの。
     rewrite('org.openrewrite.recipe:rewrite-static-analysis')
 
-    // 追加。テスト系レシピ集（JUnit移行などが入っている）
+    // テスト系レシピ集（JUnit移行などが入っている）
     rewrite('org.openrewrite.recipe:rewrite-testing-frameworks')
+
+    // 追加。Java移行のレシピ集
+    rewrite('org.openrewrite.recipe:rewrite-migrate-java')
 }
 
 // rewriteDryRun（差分プレビュー）や rewriteRun（実際に書き換え）を走らせたとき、どのレシピを実行するかをここで指定する。
 rewrite {
     // 自動整形
-    // activeRecipe('org.openrewrite.java.format.AutoFormat') // JUnit4to5Migration の効果を見るためコメントアウトしておく。
+    // activeRecipe('org.openrewrite.java.format.AutoFormat') // 他のレシピの効果を見るためコメントアウトしておく。
 
     // 未使用インポートの削除
-    // activeRecipe('org.openrewrite.java.RemoveUnusedImports') // JUnit4to5Migration の効果を見るためコメントアウトしておく。
+    // activeRecipe('org.openrewrite.java.RemoveUnusedImports') // 他のレシピの効果を見るためコメントアウトしておく。
 
-    // 追加。JUnit4 → JUnit5 への自動移行
-    activeRecipe('org.openrewrite.java.testing.junit5.JUnit4to5Migration')
+    // JUnit4 → JUnit5 への自動移行
+    // activeRecipe('org.openrewrite.java.testing.junit5.JUnit4to5Migration') // // 他のレシピの効果を見るためコメントアウトしておく。
+
+    // 追加。Java 21 への自動移行
+    activeRecipe('org.openrewrite.java.migrate.UpgradeToJava21')
+
+    // 追加。try-with-resources内の不要な close() を削除（自動クローズに任せる）
+    activeRecipe('org.openrewrite.staticanalysis.UnnecessaryCloseInTryWithResources')
+
+    // 追加。Stream API：collect(Collectors.to…List()) を .toList() に変換（Java16+）
+    activeRecipe('org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList')
+
+    // 追加。テキストブロック化：改行/連結だらけの文字列を """ … """ に変換（Java15+）
+    activeRecipe('org.openrewrite.java.migrate.lang.UseTextBlocks')
+
+    // 追加。switch式化（代入型）：switch文で代入しているパターンを switch式 へ
+    activeRecipe('org.openrewrite.java.migrate.lang.SwitchCaseAssignmentsToSwitchExpression')
+
+    // 追加。switch式化（return型）：switch文でreturnしているパターンを switch式 へ
+    activeRecipe('org.openrewrite.java.migrate.lang.SwitchCaseReturnsToSwitchExpression')
+
+    // 追加。文字コードを標準定数へ： "UTF-8" / Charset.forName("UTF-8") → StandardCharsets.UTF_8
+    activeRecipe('org.openrewrite.staticanalysis.UseStandardCharset')
+
+    // 追加。ダイヤモンド演算子：冗長なジェネリクスを <> に簡略
+    activeRecipe('org.openrewrite.staticanalysis.UseDiamondOperator')
+
+    // 追加。instanceof 化：A.class.isInstance(x) → x instanceof A
+    activeRecipe('org.openrewrite.staticanalysis.ReplaceClassIsInstanceWithInstanceof')
+
+    // 追加。java.util の近代化まとめ（不変ファクトリ、toUnmodifiableList → toList など）
+    activeRecipe('org.openrewrite.java.migrate.util.JavaUtilAPIs')
 }
 
 test {
