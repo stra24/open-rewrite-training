@@ -8,7 +8,7 @@ plugins {
     id 'org.openrewrite.rewrite' version 'latest.release'
 
     // 追加。SpringBootプラグイン
-    id 'org.springframework.boot' version '2.7.18'
+    id 'org.springframework.boot' version '3.2.12'
 }
 
 group = 'com.example'
@@ -38,7 +38,7 @@ dependencies {
     rewrite('org.openrewrite.recipe:rewrite-migrate-java')
 
     // 追加。SpringBoot 2.7 系の依存（Beforeコード用）
-    implementation platform("org.springframework.boot:spring-boot-dependencies:2.7.18")
+    implementation platform("org.springframework.boot:spring-boot-dependencies:3.2.12")
     implementation "org.springframework.boot:spring-boot-starter-web"        // HttpSecurity, Servlet など
     implementation "org.springframework.boot:spring-boot-starter-security"   // Security 周り（Adapter 等）
     implementation "org.springframework.boot:spring-boot-starter-validation" // javax/jakarta validation

@@ -1,7 +1,7 @@
 package com.example;
 
 import java.util.concurrent.Executor;
-import org.springframework.boot.task.TaskExecutorBuilder; // ← 旧型名（移行後は ThreadPoolTaskExecutorBuilder）
+import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class LegacyExecutorConfig {
 
   @Bean
-  Executor executor(TaskExecutorBuilder builder) {
+  Executor executor(ThreadPoolTaskExecutorBuilder builder) {
     return builder.build();
   }
 }
